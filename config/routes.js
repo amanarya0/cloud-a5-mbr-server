@@ -10,5 +10,6 @@
 
 module.exports.routes = {
     'POST /mbr/apply': 'mbr/apply',
-    'POST /mbr/addinfo': 'mbr/addinfo'
+    'POST /mbr/addinfo': 'mbr/addinfo',
+    'POST /mbr/login': 'mbr/login'
 };
