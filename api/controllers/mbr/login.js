@@ -1,53 +1,65 @@
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 module.exports = {
 
 
     friendlyName: 'Login',
 
 
-    description: 'Login mbr.',
+    description: 'Login account.',
 
 
     inputs: {
-        id: {
+        username: {
             type: 'string',
+            description: 'Username of the user.',
             required: true
         },
         password: {
             type: 'string',
+            description: 'password in simple format',
             required: true
-        },
+        }
     },
 
 
     exits: {
         success: {
             statusCode: 200,
-            description: 'Application retreived'
+            description: 'Login Success'
         },
-        appNotFound: {
-            statusCode: 404,
-            description: 'Application not found'
-        },
-        invalidLogin: {
-            statusCode: 400,
-            description: 'Invalid Credentials'
+        userNotFound: {
+            statusCode: 401,
+            description: 'Unauthorized User'
         }
+
     },
 
 
     fn: async function (inputs, exits) {
-        console.log(inputs);
-        let user = await User.findOne({ username: inputs.id, password: inputs.password });
-        if (undefined === user || null === user) {
-            return exits.invalidLogin({ message: 'Invalid Credentials' });
-        }
-        console.log(user);
-        let app = await Application.findOne({ name: user.name });
-        if (undefined === app || null === user) {
-            return exits.appNotFound({ message: 'No application found' });
-        }
-        return exits.success({ app });
+        let hash = crypto.createHash('sha512');
+        hash.update(inputs.password);
+        let hashedPwd = hash.digest('hex');
+        let loginUser = await User.findOne({
+            username: inputs.username,
+            password: hashedPwd
+        });
 
+        if (loginUser) {
+            // User successfully found
+            delete loginUser['password'];
+            let payload = {
+                userId: loginUser.id
+            };
+            let jwtToken = jwt.sign(payload, sails.config.session.secret, { expiresIn: '24h' });
+            return exits.success({
+                token: jwtToken,
+                username: loginUser.username,
+                name: loginUser.name
+            });
+        } else {
+            return exits.userNotFound({ message: 'Login Email or Password Invalid.' });
+        }
     }
 
 

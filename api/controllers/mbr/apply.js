@@ -10,19 +10,19 @@ module.exports = {
     inputs: {
         name: {
             type: 'string',
-            required: false
+            required: true
         },
         phone: {
             type: 'number',
-            required: false
+            required: true
         },
         address: {
             type: 'string',
-            required: false
+            required: true
         },
         employer: {
             type: 'string',
-            required: false
+            required: true
         }
     },
 

@@ -11,5 +11,7 @@
 module.exports.routes = {
     'POST /mbr/apply': 'mbr/apply',
     'POST /mbr/addinfo': 'mbr/addinfo',
-    'POST /mbr/login': 'mbr/login'
+    'POST /mbr/login': 'mbr/login',
+    'POST /mbr/signup': 'mbr/signup',
+    'POST /mbr/getinfo': 'mbr/getinfo'
 };

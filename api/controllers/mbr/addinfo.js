@@ -10,11 +10,11 @@ module.exports = {
     inputs: {
         name: {
             type: 'string',
-            required: false
+            required: true
         },
         employeeId: {
             type: 'string',
-            required: false
+            required: true
         },
         address: {
             type: 'string',
@@ -37,11 +37,11 @@ module.exports = {
 
     fn: async function (inputs, exits) {
         let app = null;
-        if (null != inputs.name) {
+        if (null !== inputs.name) {
             app = await Application.findOne({ name: inputs.name });
 
         }
-        if (null === app) {
+        if (null === app || undefined === app) {
             return exits.appNotFound({ message: 'Application not found' });
         }
         await Application.update({ name: inputs.name }).set({ status: 'Application Processed Successfully' });
