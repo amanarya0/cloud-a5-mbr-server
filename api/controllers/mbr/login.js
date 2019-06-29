@@ -36,26 +36,17 @@ module.exports = {
 
 
     fn: async function (inputs, exits) {
-
-        let user = User.findOne({ id: inputs.id, password: inputs.password });
-        if (null === user) {
+        console.log(inputs);
+        let user = await User.findOne({ username: inputs.id, password: inputs.password });
+        if (undefined === user || null === user) {
             return exits.invalidLogin({ message: 'Invalid Credentials' });
         }
-        let app = Application.findOne({ name: user.name });
-        if (null === app) {
+        console.log(user);
+        let app = await Application.findOne({ name: user.name });
+        if (undefined === app || null === user) {
             return exits.appNotFound({ message: 'No application found' });
         }
-        let response = {
-            response: {
-                id: app.id,
-                name: app.name,
-                phone: app.phone,
-                address: app.address,
-                employer: app.employer,
-                status: app.status
-            }
-        };
-        return exits.success({ response });
+        return exits.success({ app });
 
     }
 

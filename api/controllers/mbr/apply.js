@@ -48,22 +48,22 @@ module.exports = {
         let error = 'Missing information: ';
         let hasError = false;
         let existingApp = await Application.findOne({ name: inputs.name });
-        if (null != existingApp) {
+        if (null != existingApp || undefined != existingApp) {
             return exits.appAlreadyExists({ message: 'Application already present' });
         }
-        if (null === inputs.name) {
+        if (null === inputs.name || undefined === inputs.name) {
             hasError = true;
             error += 'name, ';
         }
-        if (null === inputs.phone) {
+        if (null === inputs.phone || undefined === inputs.phone) {
             hasError = true;
             error += 'phone number, ';
         }
-        if (null === inputs.address) {
+        if (null === inputs.address || undefined === inputs.address) {
             hasError = true;
             error += 'address, ';
         }
-        if (null === inputs.employer) {
+        if (null === inputs.employer || undefined === inputs.employer) {
             hasError = true;
             error += 'employer name';
         }

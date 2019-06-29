@@ -17,7 +17,7 @@ module.exports = {
             required: true
         },
 
-        id: {
+        username: {
             type: 'string',
             required: true
         },
